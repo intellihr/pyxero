@@ -75,6 +75,7 @@ class Payroll(object):
 
     OBJECT_LIST = (
         "Employees",
+        "Superfunds",
         "Timesheets",
         "PayItems",
         "PayRuns",
