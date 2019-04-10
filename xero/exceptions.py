@@ -50,7 +50,18 @@ class XeroBadRequest(XeroException):
                     ]
 
             self.problem = self.errors[0]
-            super(XeroBadRequest, self).__init__(response, payload['oauth_problem_advice'][0])
+
+            try:
+                oauth_problem_advice = [payload['oauth_problem_advice'][0]]
+            except KeyError as e:
+                if 'oauth_problem_advice' in payload:
+                    oauth_problem_advice = [payload['oauth_problem_advice']]
+                else:
+                    oauth_problem_advice = [
+                        'Payload does not contain oauth_problem_advice' + type(payload).__name__
+                    ]
+
+            super(XeroBadRequest, self).__init__(response, oauth_problem_advice)
 
         else:
             # Extract the messages from the text.
