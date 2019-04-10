@@ -39,27 +39,33 @@ class XeroBadRequest(XeroException):
         elif response.headers['content-type'].startswith('text/html'):
             payload = parse_qs(response.text)
 
-            try:
-                self.errors = [payload['oauth_problem'][0]]
-            except KeyError as e:
-                if 'oauth_problem' in payload:
-                    self.errors = [payload['oauth_problem']]
-                else:
-                    self.errors = [
-                        'Payload does not contain oauth_problem' + type(payload).__name__
-                    ]
+            # try:
+            #     self.errors = [payload['oauth_problem'][0]]
+            # except KeyError as e:
+            #     if 'oauth_problem' in payload:
+            #         self.errors = [payload['oauth_problem']]
+            #     else:
+            #         self.errors = [
+            #             'Payload does not contain oauth_problem' + type(payload).__name__
+            #         ]
+            #
+            # try:
+            #     oauth_problem_advice = [payload['oauth_problem_advice'][0]]
+            # except KeyError as e:
+            #     if 'oauth_problem_advice' in payload:
+            #         oauth_problem_advice = [payload['oauth_problem_advice']]
+            #     else:
+            #         oauth_problem_advice = [
+            #             'Payload does not contain oauth_problem_advice' + type(payload).__name__
+            #         ]
+            #
+            # self.errors = [
+            #     json.dumps({
+            #         'blargh': payload
+            #     })
+            # ]
 
             self.problem = self.errors[0]
-
-            try:
-                oauth_problem_advice = [payload['oauth_problem_advice'][0]]
-            except KeyError as e:
-                if 'oauth_problem_advice' in payload:
-                    oauth_problem_advice = [payload['oauth_problem_advice']]
-                else:
-                    oauth_problem_advice = [
-                        'Payload does not contain oauth_problem_advice' + type(payload).__name__
-                    ]
 
             super(XeroBadRequest, self).__init__(response, oauth_problem_advice)
 
