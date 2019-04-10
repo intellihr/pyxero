@@ -67,7 +67,9 @@ class XeroBadRequest(XeroException):
 
             self.problem = self.errors[0]
 
-            super(XeroBadRequest, self).__init__(response, 'Rubbish string')
+            super(XeroBadRequest, self).__init__(response, json.dumps({
+                    'blargh': payload
+                }))
 
         else:
             # Extract the messages from the text.
