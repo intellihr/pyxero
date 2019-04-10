@@ -59,11 +59,11 @@ class XeroBadRequest(XeroException):
             #             'Payload does not contain oauth_problem_advice' + type(payload).__name__
             #         ]
             #
-            # self.errors = [
-            #     json.dumps({
-            #         'blargh': payload
-            #     })
-            # ]
+            self.errors = [
+                json.dumps({
+                    'blargh': payload
+                })
+            ]
 
             self.problem = self.errors[0]
 
