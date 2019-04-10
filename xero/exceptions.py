@@ -67,7 +67,7 @@ class XeroBadRequest(XeroException):
 
             self.problem = self.errors[0]
 
-            super(XeroBadRequest, self).__init__(response, oauth_problem_advice)
+            super(XeroBadRequest, self).__init__(response, 'Rubbish string')
 
         else:
             # Extract the messages from the text.
