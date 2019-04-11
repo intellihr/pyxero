@@ -187,7 +187,8 @@ class BaseManager(object):
             print('BTTODO')
             print(json.dumps({
                 'headers': headers,
-                'body': body,
+                'uri': uri,
+                'body': body.decode('utf-8'),
             }))
 
             response = getattr(requests, method)(
