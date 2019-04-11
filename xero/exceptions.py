@@ -20,20 +20,46 @@ class XeroBadRequest(XeroException):
     def __init__(self, response):
         if response.headers['content-type'].startswith('application/json'):
             data = json.loads(response.text)
+
             msg = "%s: %s" % (data['Type'], data['Message'])
+
             self.errors = [err['Message']
-                for elem in data.get('Elements', [])
-                for err in elem.get('ValidationErrors', [])
-            ]
-            if len(self.errors) > 0:
-                self.problem = self.errors[0]
-                if len(self.errors) > 1:
-                    msg += ' (%s, and %s other issues)' % (
-                            self.problem, len(self.errors))
-                else:
-                    msg += ' (%s)' % self.problem
-            else:
-                self.problem = None
+                           for elem in data.get('Elements', [])
+                           for err in elem.get('ValidationErrors', [])
+                           ]
+
+            if 'Type' in data and data['Type'] == 'ValidationException':
+                if 'Message' in data and data['Message'] != 'A validation exception occurred':
+                    self.errors.append(data['Message'])
+
+                for key in data:
+                    value = data[key]
+                    if type(value).__name__ == 'list':
+                        for item in value:
+                            for err in item.get('ValidationErrors', []):
+                                for message in err:
+                                    validation_error = err[message]
+                                    self.errors.append(validation_error)
+
+                            for employee_field_key in item:
+                                if employee_field_key == 'ValidationErrors':
+                                    continue
+
+                                employee_field = item[employee_field_key]
+
+                                if type(employee_field).__name__ == 'dict':
+                                    for err in employee_field.get('ValidationErrors', []):
+                                        for message in err:
+                                            validation_error = err[message]
+                                            self.errors.append(validation_error)
+
+                                if type(employee_field).__name__ == 'list':
+                                    for attribute in employee_field:
+                                        for err in attribute.get('ValidationErrors', []):
+                                            for message in err:
+                                                validation_error = err[message]
+                                                self.errors.append(validation_error)
+
             super(XeroBadRequest, self).__init__(response, msg=msg)
 
         elif response.headers['content-type'].startswith('text/html'):
