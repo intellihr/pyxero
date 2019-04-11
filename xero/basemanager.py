@@ -184,6 +184,12 @@ class BaseManager(object):
             # or individual user/partner
             headers['User-Agent'] = self.user_agent
 
+            print('BTTODO')
+            print(json.dumps({
+                'headers': headers,
+                'body': body,
+            }))
+
             response = getattr(requests, method)(
                     uri, data=body, headers=headers, auth=self.credentials.oauth,
                     params=params, timeout=timeout)
