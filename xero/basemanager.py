@@ -184,13 +184,6 @@ class BaseManager(object):
             # or individual user/partner
             headers['User-Agent'] = self.user_agent
 
-            print('BTTODO')
-            print(json.dumps({
-                'headers': headers,
-                'uri': uri,
-                'body': body.decode('utf-8'),
-            }))
-
             response = getattr(requests, method)(
                     uri, data=body, headers=headers, auth=self.credentials.oauth,
                     params=params, timeout=timeout)
@@ -206,6 +199,9 @@ class BaseManager(object):
                 return response.content
 
             elif response.status_code == 400:
+                print('BTTODO - BODY')
+                print(response.request.body)
+
                 raise XeroBadRequest(response)
 
             elif response.status_code == 401:
