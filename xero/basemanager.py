@@ -72,7 +72,8 @@ class BaseManager(object):
         'CanApplyToRevenue',
         'IsReconciled',
         'EnablePaymentsToAccount',
-        'ShowInExpenseClaims'
+        'ShowInExpenseClaims',
+        'HasTradeSupportLoanDebt'
     )
     DECIMAL_FIELDS = (
         'Hours',
