@@ -16,6 +16,10 @@ pip install pyxero
 
 You'll need to follow the [Xero Developer documentation](https://developer.xero.com/documentation/) to register your application. Do that as follows:
 
+### Deployment
+
+To deploy this library to pypi increment the version number in `xero/__init__.py` and refer to the following https://packaging.python.org/tutorials/packaging-projects/ using `python3 -m twine upload dist/*` instead of `python3 -m twine upload --repository-url https://test.pypi.org/legacy/ dist/*`
+
 ### Public Applications
 
 Public applications use a 3-step OAuth process.

@@ -17,7 +17,7 @@ with io.open('README.md', encoding='utf8') as readme:
 
 
 setup(
-    name='pyxero',
+    name='intellihr_pyxero',
     version=version,
     description='Python API for accessing the REST API of the Xero accounting tool.',
     long_description=long_description,
